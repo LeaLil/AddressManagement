@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:component-scan base-package="repository"/>
+
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+    <!-- *** EntityManagerFactory *** -->
+    <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="ch.admin.seco.tcsb.roominfo"/>
+        <property name="packagesToScan">
+            <list>
+                <value>model</value>
+                <value>repository</value>
+            </list>
+        </property>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter">
+                <property name="database" value="MYSQL"/>
+            </bean>
+        </property>
+        <property name="persistenceXmlLocation" value="classpath*:META-INF/persistence.xml" />
+        <property name="jpaProperties">
+            <props>
+                <prop key="eclipselink.weaving">static</prop>
+                <prop key="javax.persistence.jdbc.driver">com.mysql.jdbc.Driver</prop>
+                <prop key="javax.persistence.jdbc.url">jdbc:mysql://localhost:3306/gkjava_db</prop>
+                <prop key="javax.persistence.jdbc.user">dbuser</prop>
+                <prop key="javax.persistence.jdbc.password">dbpw</prop>
+                <!--<prop key="eclipselink.ddl-generation">drop-and-create-tables</prop>
+                <prop key="eclipselink.ddl-generation.output-mode">database</prop>-->
+                <prop key="eclipselink.logging.level">INFO</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- *** Transaction Manager *** -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="emf"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+</beans>

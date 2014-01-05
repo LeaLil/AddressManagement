@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+
+    <!-- ========================================= -->
+    <!-- APPENDERS -->
+    <!-- ========================================= -->
+    <!--<appender name="technical-console-appender" class="org.apache.log4j.ConsoleAppender">-->
+        <!--<param name="Target" value="System.out"/>-->
+        <!--<layout class="org.apache.log4j.PatternLayout">-->
+            <!--&lt;!&ndash; Note: Replace %c{1} with  %c to get the full category path &ndash;&gt;-->
+            <!--<param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] [%c]: %m%n"/>-->
+        <!--</layout>-->
+    <!--</appender>-->
+
+    <!-- ========================================= -->
+    <!-- ROOT CONFIG -->
+    <!-- ========================================= -->
+
+<!--    <logger name="org.springframework" additivity="true">
+        <level value="warn"/>
+    </logger>
+    <logger name="org.dozer" additivity="true">
+        <level value="warn"/>
+    </logger>
+
+    <logger name="org.apache.commons.beanutils" additivity="true">
+        <level value="warn"/>
+    </logger>-->
+
+
+    <root>
+        <level value="debug"/>
+        <appender-ref ref="technical-console-appender"/>
+    </root>
+
+</log4j:configuration>

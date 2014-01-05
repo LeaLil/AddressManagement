@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <h:outputStylesheet library="css" name="style.css"  />
+    <f:metadata>
+
+        <f:event type="preRenderView" listener="#{addressController.init}"/>
+    </f:metadata>
+</h:head>
+<h:body>
+
+
+    <h1>Hello World PrimeFaces</h1>
+
+    <h:form id="form">
+        <p:panel id="editPanel">
+            <div class="row">
+                <div>
+                    <h:outputLabel value="Name" />
+
+                </div>
+                <p:inputText title="name" value="#{addressModel.created.name}"/>
+            </div>
+            <div class="row">
+                <div>  <h:outputLabel value="Vorname" />
+                </div>
+               <p:inputText title="prename" value="#{addressModel.created.prename}"/>
+            </div>
+            <div class="row"><div>
+                <h:outputLabel value="E-Mail" /></div>
+                <p:inputText title="mail" value="#{addressModel.created.mailAddress}"/>
+            </div>
+
+            <div class="row">
+                <div>
+                <h:outputLabel value="Web" /></div>
+                <p:inputText title="web" value="#{addressModel.created.web}"/>
+            </div>
+            <div class="row">
+                <div>
+                <h:outputLabel value="E-Mail ersatz" /></div>
+                <p:inputText title="second_mail" value="#{addressModel.created.mail2}"/>
+            </div>
+            <p:commandButton value="Hinzufügen" rendered="#{addressModel.addMode}" actionListener="#{addressController.addAction()}" update=":addressTable, :form:editPanel"/>
+            <p:commandButton value="Aktualisieren" rendered="#{!addressModel.addMode}" actionListener="#{addressController.updateAction()}" update=":addressTable, :form:editPanel"/>
+
+            <p:commandButton value="Löschen" rendered="#{!addressModel.addMode}" actionListener="#{addressController.deleteAction()}" update=":addressTable, :form:editPanel"/>
+            <p:commandButton value="Abbrechen" actionListener="#{addressController.cancelAction()}" update=":addressTable, :form:editPanel"/>
+
+        </p:panel>
+    </h:form>
+
+    <p:dataTable id="addressTable" rowKey="#{a.name}" value="#{addressModel.existingAddressList}" var="a"
+                     selection="#{addressModel.selected}" selectionMode="single">
+            <p:ajax event="rowSelect" listener="#{addressController.onRowSelect}"
+                 update=":form:editPanel"  process="@this"/>
+            <!--<p:ajax event="rowUnselect" listener="#{addressController.onRowUnselect}" update="@this"/>-->
+            <p:column headerText="name">
+                #{a.name}
+            </p:column>
+
+            <p:column headerText="vorname">
+                #{a.prename}
+            </p:column>
+
+            <p:column headerText="E-Mail">
+                #{a.mailAddress}
+            </p:column>
+
+            <p:column headerText="Web">
+                #{a.web}
+            </p:column>
+        </p:dataTable>
+
+
+</h:body>
+</html>
