@@ -1,14 +1,19 @@
 package repository;
 
 import model.adress.Address;
-import repository.architecture.PersistableRepository;
+
+import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: tysjn
- * Date: 05.12.13
- * Time: 17:12
- * To change this template use File | Settings | File Templates.
+ * Interface für das handlen von DB-Requests, die etwas mit Addresses zu tun haben.
  */
-public interface AddressRepository extends PersistableRepository<Address> {
+public interface AddressRepository {
+    List<Address> getAll();
+
+    Address store(Address dto);
+
+
+    Address findById(Long id);
+
+    void remove(Address entity);
 }

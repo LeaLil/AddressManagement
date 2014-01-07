@@ -3,18 +3,17 @@ package model.architecture;
 import javax.persistence.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: gid
- * Date: 14.10.13
- * Time: 09:32
+ * BaseEntity.
+ * Von dieser Klasse erben alle anderen Entity-Klassen
+ * Stellt die Verwendung einer ID sicher.
  */
-
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class AddressBaseEntity implements Persistable {
+public abstract class BaseEntity implements Persistable {
 
-    private static final long serialVersionUID = 1L;
-
+    /**
+     * GenerationType.Identity sorgt für die Verwendung des Auto-Increment Mechanismuses.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

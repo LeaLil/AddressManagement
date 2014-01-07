@@ -1,26 +1,29 @@
 package model.adress;
 
-import model.architecture.AddressBaseEntity;
+import com.sun.istack.internal.NotNull;
+import model.architecture.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
- * Created with IntelliJ IDEA.
- * User: tysjn
- * Date: 05.12.13
- * Time: 17:18
- * To change this template use File | Settings | File Templates.
+ * Entity-Klasse
+ * Mapping zu der DB-Tabelle 'address'
+ * übernimmt zudem allfällige Validierungsaufgaben
  */
 @Entity
 @Table(name = "address")
-public class Address extends AddressBaseEntity {
+public class Address extends BaseEntity {
 
     @Column(name = "firstname")
+    @NotNull
     private String prename;
 
     @Column(name = "lastname")
+    @NotNull
     private String name;
 
     @Column(name = "email")
@@ -99,13 +102,51 @@ public class Address extends AddressBaseEntity {
         return result;
     }
 
-    @Override
-    public Integer getVersion() {
-        return 1;
+    public boolean isValid() {
+        if (name == "") {
+
+            return false;
+        }
+        if (prename == "") {
+            return false;
+        }
+        if (!validateMail()) {
+            return false;
+        }
+        return validateWeb();
     }
 
-    @Override
-    public void setVersion(Integer version) {
-        //Do nothing... Just for... Interfaces!!!
+    /**
+     * Regex by http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/, 7.1.2014
+     *
+     * @return
+     */
+    private boolean validateMail() {
+        String mailRegex = "^[_A-Za-z0-9]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$";
+        if ((mailAddress != null && mailAddress != "")) {
+            if (!mailAddress.matches(mailRegex)) {
+                return false;
+            }
+
+        }
+        if ((mail2 != null && mail2 != "")) {
+            if (!mail2.matches(mailRegex)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean validateWeb() {
+        if (web == "" || web == null) {
+            return true;
+        }else {
+            try {
+                URI url = new URI(web);
+                return true;
+            } catch (URISyntaxException e) {
+                return false;
+            }
+        }
     }
 }

@@ -13,7 +13,7 @@
 
     <!-- *** EntityManagerFactory *** -->
     <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="persistenceUnitName" value="ch.admin.seco.tcsb.roominfo"/>
+        <property name="persistenceUnitName" value="myName"/>
         <property name="packagesToScan">
             <list>
                 <value>model</value>

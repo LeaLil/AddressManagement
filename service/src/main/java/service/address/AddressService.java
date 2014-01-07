@@ -6,11 +6,7 @@ import java.io.InputStream;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: tysjn
- * Date: 05.12.13
- * Time: 17:48
- * To change this template use File | Settings | File Templates.
+ * Stellt sicher, dass die implementierenden Klassen alle nötigen Methoden zum handlen von Addressen bereitstellen
  */
 public interface AddressService {
 
@@ -19,7 +15,5 @@ public interface AddressService {
     void add(Address dto);
 
     void delete(Long id);
-
-    InputStream createExportStream();
 
 }

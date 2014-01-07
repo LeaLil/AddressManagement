@@ -8,19 +8,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import service.address.AddressService;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.io.Serializable;
 
 /**
- * Created with IntelliJ IDEA.
- * User: tysjn
- * Date: 05.12.13
- * Time: 17:52
- * To change this template use File | Settings | File Templates.
+ * Controller zum handlen aller Actions auf der Address-View.
  */
 @ManagedBean(name = "addressController")
 @SessionScoped
@@ -45,37 +43,71 @@ public class AddressController implements Serializable{
 //        model = new AddressModel();
     }
 
-
+    /**
+     * Laden aller Adressen aus der DB
+     */
     public void init() {
         model.setExistingAddressList(service.getAll());
     }
 
 
+    /**
+     * Alle Adressen aus der DB
+     * @return
+     */
     public java.util.List<Address> get(){
         return service.getAll();
     }
 
+    /**
+     * Hinzufügen der aktuellen Daten
+     */
     public void addAction() {
-        service.add(model.getCreated());
-        model.saveCreated();
+        if (model.isCreatedValid()) {
+            service.add(model.getCreated());
+            model.saveCreated();
+
+        }else {
+            addErrorMsg("Die eingegebenen Werte sind nicht valid. Bitte überprüfen");
+        }
+
     }
 
+    /**
+     * Aktualisieren des momentan ausgewählten Wertes
+     */
     public void updateAction() {
-        service.add(model.getCreated());
-        model.init();
-    }
+        if(model.isCreatedValid()) {
+            service.add(model.getCreated());
+            model.init();
+            addSuccessMsg("Wert wurde erfolgreich upgedated");
+        }else {
+            addErrorMsg("Die eingegebenen Werte sind nicht valid. Bitte überprüfen");
+        }
+     }
 
+    /**
+     * Löschen der aktuell selektierten Action
+     */
     public void deleteAction() {
         service.delete(model.getCreated().getId());
         model.deleteSelected();
+        addSuccessMsg("Wert wurde erfolgreich gelöscht");
 //        service.delete(id);
 //        return new ResponseMessage(ResponseMessage.Type.success, "address with id: " + id + " deleted", null);
     }
 
+    /**
+     * Abrechen des Hinzufügen/Editierungsvorgangs
+     */
     public void cancelAction() {
         model.init();
     }
 
+    /**
+     * Auswahl eines Wertes aus der Tabelle
+     * @param event
+     */
     public void onRowSelect(SelectEvent event) {
         model.setCreated(model.getSelected());
         model.setAddMode(false);
@@ -83,6 +115,16 @@ public class AddressController implements Serializable{
 
     public void onRowUnselect(UnselectEvent event) {
         model.init();
+    }
+
+
+    private void addSuccessMsg(String msg) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Erfolg", msg));
+
+    }
+
+    private void addErrorMsg(String msg) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", msg));
     }
 
 }

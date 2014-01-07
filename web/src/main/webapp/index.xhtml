@@ -18,13 +18,12 @@
 
 
     <h1>Hello World PrimeFaces</h1>
-
+    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
     <h:form id="form">
         <p:panel id="editPanel">
             <div class="row">
                 <div>
                     <h:outputLabel value="Name" />
-
                 </div>
                 <p:inputText title="name" value="#{addressModel.created.name}"/>
             </div>
